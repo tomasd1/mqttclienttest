@@ -13,7 +13,7 @@ class StandaloneSubscriber
     "#{Settings.bunny.environment}.web",
     connection: BunnyFactory.new.create,
     # ack: true,
-    # durable: true,
+    durable: true,
     exchange: 'mqtt.topic',
     routing_key: 'development.web.#'
   )
@@ -34,7 +34,7 @@ class StandaloneSubscriber
     channel = conn.create_channel
     exchange = channel.topic('mqtt.topic', durable: true)
 
-    exchange.publish(message, routing_key: routing_key)
+    exchange.publish(message, routing_key: routing_key, persistent: true)
     p message
     p routing_key
     conn.close
